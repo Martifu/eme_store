@@ -1,9 +1,14 @@
 import 'package:eme_store/src/bloc/login_bloc.dart';
+import 'package:eme_store/src/bloc/provider.dart';
+import 'package:eme_store/src/providers/usuario_provider.dart';
 import 'package:eme_store/src/widgets/circle.dart';
 import 'package:flutter/material.dart';
 
 
 class RegisterPage extends StatelessWidget {
+
+  final usuarioProvider = UsuarioProvider();
+
    @override
   Widget build(BuildContext context) {
 
@@ -101,7 +106,7 @@ class RegisterPage extends StatelessWidget {
   }
 
   Widget _formulario(BuildContext context) {
-     final bloc  = LoginBloc();
+     final bloc  = Provider.of(context);
      return SingleChildScrollView(
        child: Column(
          children: <Widget>[
@@ -187,7 +192,7 @@ class RegisterPage extends StatelessWidget {
             elevation: 0.0,
             color:Color.fromRGBO(50, 54, 66, 1),
             textColor: Colors.white,
-            onPressed: snapshot.hasData ? () => _login(bloc, context) : null
+            onPressed: snapshot.hasData ? () => _register(bloc, context) : null
           ),
     );
       },
@@ -236,14 +241,15 @@ class RegisterPage extends StatelessWidget {
     
   }
 
-  _login(LoginBloc bloc, BuildContext context) {
+  _register(LoginBloc bloc, BuildContext context) {
     print('================');
     print('Email: ${ bloc.name }');
     print('Email: ${ bloc.email }');
     print('Password: ${ bloc.password }');
     print('================');
-    Navigator.of(context).pop();
-    Navigator.of(context).pushReplacementNamed('home');
+    
+    usuarioProvider.nuevoUsuario(bloc.name, bloc.email, bloc.password);
+    
   }
 
  
